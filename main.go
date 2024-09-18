@@ -5,7 +5,11 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/AungKyawPhyo1142/be-students-management-system/config"
+	"github.com/AungKyawPhyo1142/be-students-management-system/controllers"
 	"github.com/AungKyawPhyo1142/be-students-management-system/handlers"
+	"github.com/AungKyawPhyo1142/be-students-management-system/migrations"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
@@ -15,6 +19,12 @@ func main() {
 
 	godotenv.Load(".env")
 	port := os.Getenv("PORT")
+
+	// connect to database
+	config.ConnectDB()
+	
+	// run migrations
+	migrations.Migrate()
 
 	// define a default router
 	router := chi.NewRouter()
@@ -30,6 +40,7 @@ func main() {
 	// define v1 Router
 	v1Router := chi.NewRouter()
 	v1Router.Get("/ready", handlers.HandlerReady)
+	v1Router.Post("/user", controllers.CreateUser)
 
 	// mount the v1 router to main/default router
 	router.Mount("/v1", v1Router)
