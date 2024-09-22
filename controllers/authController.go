@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -50,6 +51,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		helpers.RespondWithErr(w, http.StatusUnauthorized, fmt.Sprintf("User not found: %v", err.Error()))
 		return
 	}
+
+	log.Printf("Db Admin: %v", dbAdmin)
 
 	// compare the hashedPassword with provided password
 	if err := bcrypt.CompareHashAndPassword([]byte(dbAdmin.Password), []byte(admin.Password)); err != nil {
