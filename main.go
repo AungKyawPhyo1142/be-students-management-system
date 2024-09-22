@@ -41,8 +41,10 @@ func main() {
 	v1Router := chi.NewRouter()
 
 	v1Router.Get("/ready", handlers.HandlerReady)
-	v1Router.Post("/user", controllers.CreateUser)
 	v1Router.Get("/user", controllers.GetAllUsers)
+
+	// auth
+	v1Router.Post("/register", controllers.Register) // register
 
 	// Student Related Routes
 	v1Router.Post("/students", controllers.CreateStudent)        // create
