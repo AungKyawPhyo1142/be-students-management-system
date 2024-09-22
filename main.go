@@ -45,6 +45,7 @@ func main() {
 
 	// auth
 	v1Router.Post("/register", controllers.Register) // register
+	v1Router.Post("/login", controllers.Login) // login
 
 	// Student Related Routes
 	v1Router.Post("/students", controllers.CreateStudent)        // create
