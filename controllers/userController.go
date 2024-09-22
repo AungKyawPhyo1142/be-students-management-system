@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 
 	"net/http"
 
@@ -24,9 +23,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Print the request body
-	fmt.Println("Request Body:", string(body))
-
 	var user models.User
 	err := json.Unmarshal(body, &user)
 
@@ -34,8 +30,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		helpers.RespondWithErr(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
-
-	log.Printf("User: %+v", user)
 
 	result := config.DB.Create(&user)
 
@@ -46,4 +40,15 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	helpers.RespondWithJSON(w, http.StatusCreated, models.User.ToUserResponse(user))
 
+}
+
+// get all users from db
+func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	var users []models.User
+	result := config.DB.Find(&users)
+	if result.Error != nil {
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("error fetching users: %v", result.Error))
+		return
+	}
+	helpers.RespondWithJSON(w, http.StatusOK, models.User.GetAllUsersResponse(users[0], users))
 }

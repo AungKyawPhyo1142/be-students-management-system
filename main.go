@@ -22,7 +22,7 @@ func main() {
 
 	// connect to database
 	config.ConnectDB()
-	
+
 	// run migrations
 	migrations.Migrate()
 
@@ -39,8 +39,17 @@ func main() {
 
 	// define v1 Router
 	v1Router := chi.NewRouter()
+
 	v1Router.Get("/ready", handlers.HandlerReady)
 	v1Router.Post("/user", controllers.CreateUser)
+	v1Router.Get("/user", controllers.GetAllUsers)
+
+	// Student Related Routes
+	v1Router.Post("/students", controllers.CreateStudent)        // create
+	v1Router.Patch("/students/{id}", controllers.EditStudent)    // update
+	v1Router.Delete("/students/{id}", controllers.DeleteStudent) // delete student by id
+	v1Router.Get("/students/{id}", controllers.GetStudentByID)   // get student by id
+	v1Router.Get("/students", controllers.GetAllStudents)        // get all students
 
 	// mount the v1 router to main/default router
 	router.Mount("/v1", v1Router)
