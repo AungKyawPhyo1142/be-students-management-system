@@ -8,6 +8,7 @@ import (
 	"github.com/AungKyawPhyo1142/be-students-management-system/config"
 	"github.com/AungKyawPhyo1142/be-students-management-system/controllers"
 	"github.com/AungKyawPhyo1142/be-students-management-system/handlers"
+	"github.com/AungKyawPhyo1142/be-students-management-system/middleware"
 	"github.com/AungKyawPhyo1142/be-students-management-system/migrations"
 
 	"github.com/go-chi/chi/v5"
@@ -44,14 +45,21 @@ func main() {
 	v1Router.Get("/user", controllers.GetAllUsers)
 
 	// auth
-	v1Router.Post("/register", controllers.Register) // register
+	v1Router.Route("/auth", func(auth chi.Router) {
+		auth.Post("/register", controllers.Register) // register
+		auth.Post("/login", controllers.Login)       // login
+	})
 
-	// Student Related Routes
-	v1Router.Post("/students", controllers.CreateStudent)        // create
-	v1Router.Patch("/students/{id}", controllers.EditStudent)    // update
-	v1Router.Delete("/students/{id}", controllers.DeleteStudent) // delete student by id
-	v1Router.Get("/students/{id}", controllers.GetStudentByID)   // get student by id
-	v1Router.Get("/students", controllers.GetAllStudents)        // get all students
+	// Student Related Routes protected with AuthMiddleware
+	v1Router.Route("/student", func(r chi.Router) {
+		r.Use(middleware.AuthMiddleware)
+
+		r.Post("/", controllers.CreateStudent)       // create
+		r.Patch("/{id}", controllers.EditStudent)    // update
+		r.Delete("/{id}", controllers.DeleteStudent) // delete student by id
+		r.Get("/{id}", controllers.GetStudentByID)   // get student by id
+		r.Get("/", controllers.GetAllStudents)       // get all students
+	})
 
 	// mount the v1 router to main/default router
 	router.Mount("/v1", v1Router)

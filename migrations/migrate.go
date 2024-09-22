@@ -21,7 +21,7 @@ func Migrate() {
 		log.Fatalf("Database is not correct: %v", currentDB)
 	}
 
-	err := config.DB.AutoMigrate(&models.User{}, &models.Student{}, &models.Class{}, &models.StudentClass{})
+	err := config.DB.AutoMigrate(&models.Admin{}, &models.Student{}, &models.Class{}, &models.StudentClass{})
 
 	if err != nil {
 		log.Fatal("Migration failed: ", err)
