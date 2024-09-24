@@ -50,15 +50,28 @@ func main() {
 		auth.Post("/login", controllers.Login)       // login
 	})
 
-	// Student Related Routes protected with AuthMiddleware
-	v1Router.Route("/student", func(r chi.Router) {
+	// routes protected with AuthMiddleware
+	v1Router.Route("/", func(r chi.Router) {
 		r.Use(middleware.AuthMiddleware)
 
-		r.Post("/", controllers.CreateStudent)       // create
-		r.Patch("/{id}", controllers.EditStudent)    // update
-		r.Delete("/{id}", controllers.DeleteStudent) // delete student by id
-		r.Get("/{id}", controllers.GetStudentByID)   // get student by id
-		r.Get("/", controllers.GetAllStudents)       // get all students
+		// student
+		r.Route("/student", func(r chi.Router) {
+			r.Post("/", controllers.CreateStudent)       // create
+			r.Patch("/{id}", controllers.EditStudent)    // update
+			r.Delete("/{id}", controllers.DeleteStudent) // delete student by id
+			r.Get("/{id}", controllers.GetStudentByID)   // get student by id
+			r.Get("/", controllers.GetAllStudents)       // get all students
+		})
+
+		// class
+		r.Route("/class", func(r chi.Router) {
+			r.Post("/", controllers.CreateClass)         // create
+			r.Get("/", controllers.GetAllClasses)        // get all classes
+			r.Get("/{code}", controllers.GetClassByID)   // get class by class_code
+			r.Patch("/{code}", controllers.UpdateClass)  // update
+			r.Delete("/{code}", controllers.DeleteClass) // delete class by class_code
+		})
+
 	})
 
 	// mount the v1 router to main/default router
