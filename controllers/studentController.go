@@ -117,7 +117,10 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error getting students: %v", err.Error()))
 		return
 	}
-
+	if len(students) == 0 {
+		helpers.RespondWithJSON(w, http.StatusOK, models.GetAllStudentsResponse{Data: []models.StudentResponse{}})
+		return
+	}
 	helpers.RespondWithJSON(w, http.StatusOK, models.Student.GetAllStudentsResponse(students[0], students))
 }
 
