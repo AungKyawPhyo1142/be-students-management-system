@@ -61,6 +61,10 @@ func main() {
 			r.Delete("/{id}", controllers.DeleteStudent) // delete student by id
 			r.Get("/{id}", controllers.GetStudentByID)   // get student by id
 			r.Get("/", controllers.GetAllStudents)       // get all students
+
+			r.Post("/{id}/{code}", controllers.AssignStudentToClass)     // assign student to class
+			r.Get("/{code}", controllers.GetAllStudentsFromClass)        // get students from class
+			r.Delete("/{id}/{code}", controllers.DeleteStudentFromClass) // remove student from class
 		})
 
 		// class
