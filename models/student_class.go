@@ -14,6 +14,9 @@ type StudentClass struct {
 	StudentID      uint      `gorm:"not null" json:"student_id"`
 	ClassID        string    `gorm:"not null" json:"class_code"`
 	EnrollmentDate time.Time `gorm:"not null" json:"enrollment_date"`
+
+	// Create a unique constraint on the combination of StudentID and ClassID
+	UniqueConstraint string `gorm:"uniqueIndex:idx_student_class,unique" json:"-"`
 }
 
 type ToStudentClassResponse struct {

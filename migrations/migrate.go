@@ -37,7 +37,7 @@ func Migrate() {
 		log.Fatalf("Could not migrate: %v", err)
 	}
 
-	err := config.DB.AutoMigrate(&models.Admin{}, &models.Student{}, &models.Class{}, &models.StudentClass{})
+	err := config.DB.AutoMigrate(&models.Admin{}, &models.Student{}, &models.Class{}, &models.StudentClass{}, &models.Instructor{}, &models.InstructorClass{})
 
 	if err != nil {
 		log.Fatal("Migration failed: ", err)

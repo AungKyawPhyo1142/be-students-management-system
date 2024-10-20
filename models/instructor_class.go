@@ -13,6 +13,9 @@ type InstructorClass struct {
 	gorm.Model
 	InstructorID uint   `gorm:"not null" json:"instructor_id"`
 	ClassID      string `gorm:"not null" json:"class_code"`
+
+	// Create a unique constraint on the combination of InstructorID and ClassID
+	UniqueConstraint string `gorm:"uniqueIndex:idx_instructor_class,unique" json:"-"`
 }
 
 type ToInstructorClassResponse struct {
@@ -27,21 +30,21 @@ type ToAllInstructorClassResponse struct {
 	Data []ToInstructorClassResponse `json:"data"`
 }
 
-func (ic InstructorClass) ToStudentClassResponse() ToInstructorClassResponse {
+func (ic InstructorClass) ToInstructorClassResponse() ToInstructorClassResponse {
 	return ToInstructorClassResponse{
-		ID:             ic.ID,
-		InstructorID:   ic.InstructorID,
-		ClassID:        ic.ClassID,
-		CreatedAt:      ic.CreatedAt,
-		UpdatedAt:      ic.UpdatedAt,
+		ID:           ic.ID,
+		InstructorID: ic.InstructorID,
+		ClassID:      ic.ClassID,
+		CreatedAt:    ic.CreatedAt,
+		UpdatedAt:    ic.UpdatedAt,
 	}
 }
 
-func (sc InstructorClass) ToAllStudentClassResponse(values []InstructorClass) ToAllInstructorClassResponse {
+func (sc InstructorClass) ToAllInstructorClassResponse(values []InstructorClass) ToAllInstructorClassResponse {
 	var response []ToInstructorClassResponse
 
 	for _, value := range values {
-		response = append(response, value.ToStudentClassResponse())
+		response = append(response, value.ToInstructorClassResponse())
 	}
 
 	return ToAllInstructorClassResponse{
