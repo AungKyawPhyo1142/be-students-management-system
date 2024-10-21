@@ -76,6 +76,19 @@ func main() {
 			r.Delete("/{code}", controllers.DeleteClass) // delete class by class_code
 		})
 
+		// instructor
+		r.Route("/instructor", func(r chi.Router) {
+			r.Post("/", controllers.CreateInstructor)       // create
+			r.Get("/", controllers.GetAllInstructors)       // get all instructors
+			r.Get("/{id}", controllers.GetInstructorByID)   // get instructor by id
+			r.Patch("/{id}", controllers.EditInstructor)    // update instructor
+			r.Delete("/{id}", controllers.DeleteInstructor) // delete instructor by id
+
+			r.Post("/{id}/{code}", controllers.AssignInstructorToClass) // assign instructor to a class
+			r.Get("/{code}", controllers.GetAllInstructorsFromClass) // get all instructors from class
+			r.Delete("/{id}/{code}", controllers.DeleteInstructorFromClass) // remove instructor from class
+		})
+
 	})
 
 	// mount the v1 router to main/default router

@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/AungKyawPhyo1142/be-students-management-system/config"
@@ -184,6 +185,10 @@ func AssignStudentToClass(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := config.DB.Create(&studentClass).Error; err != nil {
+		if strings.Contains(err.Error(), "duplicate key values") {
+			helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("student is already assigned to the particular class: %v", err.Error()))
+			return
+		}
 		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error saving data: %v", err.Error()))
 		return
 	}
