@@ -1,5 +1,4 @@
-# Use an official Go image as the base image
-FROM golang:1.20
+FROM golang:1.22-alpine
 
 # Set the working directory to root
 WORKDIR /
