@@ -20,7 +20,11 @@ var jwtKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 
 // Claims define the structure of the JWT payload
 type Claims struct {
-	Username string `json:"username"`
+	Username  string    `json:"username"`
+	Name      string    `json:"name"`
+	Role      string    `json:"role"`
+	ID        uint      `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
 	jwt.RegisteredClaims
 }
 
@@ -63,7 +67,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// create jwt token
 	expirationTime := time.Now().Add(1 * time.Hour) // set 1hr as expiration time
 	claims := &Claims{
-		Username: dbAdmin.Username,
+		Username:  dbAdmin.Username,
+		Name:      dbAdmin.Name,
+		Role:      dbAdmin.Role,
+		ID:        dbAdmin.ID,
+		CreatedAt: dbAdmin.CreatedAt,
+
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
