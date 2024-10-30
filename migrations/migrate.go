@@ -22,6 +22,12 @@ func Migrate() {
 	// 	log.Fatalf("Database is not correct: %v", currentDB)
 	// }
 
+	err := config.DB.AutoMigrate(&models.Admin{}, &models.Student{}, &models.Class{}, &models.StudentClass{}, &models.Instructor{}, &models.InstructorClass{})
+
+	if err != nil {
+		log.Fatal("Migration failed: ", err)
+	}
+
 	// migration tracking
 	migrations := []*gormigrate.Migration{
 		{
@@ -35,12 +41,6 @@ func Migrate() {
 
 	if err := m.Migrate(); err != nil {
 		log.Fatalf("Could not migrate: %v", err)
-	}
-
-	err := config.DB.AutoMigrate(&models.Admin{}, &models.Student{}, &models.Class{}, &models.StudentClass{}, &models.Instructor{}, &models.InstructorClass{})
-
-	if err != nil {
-		log.Fatal("Migration failed: ", err)
 	}
 
 	log.Printf("current database %v", config.DB.Migrator().CurrentDatabase())
