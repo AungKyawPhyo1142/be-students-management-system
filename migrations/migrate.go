@@ -18,9 +18,9 @@ func Migrate() {
 	log.Printf("current database %v", currentDB)
 
 	// make sure it is the correct database i am trying to migrate
-	if currentDB != "student-management-system-db" {
-		log.Fatalf("Database is not correct: %v", currentDB)
-	}
+	// if currentDB != "student-management-system-db" && currentDB != "railway" {
+	// 	log.Fatalf("Database is not correct: %v", currentDB)
+	// }
 
 	// migration tracking
 	migrations := []*gormigrate.Migration{
