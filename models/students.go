@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Student struct {
 	gorm.Model
+	Image     *string `gorm:"size:255" json:"image"` // using pointer to make it optional
 	FirstName string  `gorm:"type:varchar(100)" json:"firstName" validate:"required"`
 	LastName  string  `gorm:"type:varchar(100)" json:"lastName" validate:"required"`
 	DOB       string  `gorm:"type:varchar(100)" json:"dob" validate:"required"`
@@ -16,6 +17,7 @@ type StudentResponse struct {
 	ID        uint   `json:"id"`
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
+	Image     string `json:"image"`
 	DOB       string `json:"date_of_birth"`
 	Phone     string `json:"phone"`
 	Email     string `json:"email"`
@@ -28,10 +30,18 @@ type GetAllStudentsResponse struct {
 }
 
 func (s Student) ToStudentResponse() StudentResponse {
+	
+	image := ""
+
+	if s.Image != nil {
+		image = *s.Image
+	}
+
 	return StudentResponse{
 		ID:        s.ID,
 		FirstName: s.FirstName,
 		LastName:  s.LastName,
+		Image:     image,
 		DOB:       s.DOB,
 		Phone:     s.Phone,
 		Email:     s.Email,

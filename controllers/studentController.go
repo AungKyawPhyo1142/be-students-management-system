@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/AungKyawPhyo1142/be-students-management-system/config"
 	"github.com/AungKyawPhyo1142/be-students-management-system/helpers"
@@ -116,7 +118,10 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error getting students: %v", err.Error()))
 		return
 	}
-
+	if len(students) == 0 {
+		helpers.RespondWithJSON(w, http.StatusOK, models.GetAllStudentsResponse{Data: []models.StudentResponse{}})
+		return
+	}
 	helpers.RespondWithJSON(w, http.StatusOK, models.Student.GetAllStudentsResponse(students[0], students))
 }
 
@@ -134,4 +139,96 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	helpers.RespondWithJSON(w, http.StatusOK, fmt.Sprintf("Student id %v is deleted successfully!", id))
+}
+
+// assign student to class
+func AssignStudentToClass(w http.ResponseWriter, r *http.Request) {
+	studentID, err := helpers.GetIDFromParams(r)
+	classCode := chi.URLParam(r, "code")
+	if err != nil {
+		helpers.RespondWithErr(w, http.StatusBadRequest, fmt.Sprintf("Error parsing student id: %v", err.Error()))
+		return
+	}
+
+	reqBody, err := io.ReadAll(r.Body)
+	if err != nil {
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error reading request body: %v", err.Error()))
+		return
+	}
+
+	// we can't unmarshal primitive data-types
+	type EnrollmentDateRequest struct {
+		EnrollmentDate string `json:"enrollment_date"`
+	}
+
+	var enrollmentDate EnrollmentDateRequest
+
+	if err := json.Unmarshal(reqBody, &enrollmentDate); err != nil {
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error parsing request body: %v", err.Error()))
+		return
+	}
+
+	// define the layout of time
+	const layout = "02-01-2006"
+
+	// parse the string to time
+	parsedDate, err := time.Parse(layout, enrollmentDate.EnrollmentDate)
+	if err != nil {
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error parsing enrollment date: %v", err.Error()))
+		return
+	}
+
+	studentClass := models.StudentClass{
+		StudentID:      uint(studentID),
+		ClassID:        classCode,
+		EnrollmentDate: parsedDate,
+	}
+
+	if err := config.DB.Create(&studentClass).Error; err != nil {
+		if strings.Contains(err.Error(), "duplicate key values") {
+			helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("student is already assigned to the particular class: %v", err.Error()))
+			return
+		}
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error saving data: %v", err.Error()))
+		return
+	}
+
+	helpers.RespondWithJSON(w, http.StatusCreated, studentClass)
+
+}
+
+// get all students from a class
+func GetAllStudentsFromClass(w http.ResponseWriter, r *http.Request) {
+	classCode := chi.URLParam(r, "code")
+
+	if classCode == "" {
+		helpers.RespondWithErr(w, http.StatusBadRequest, "Empty class-code in URL Param")
+		return
+	}
+
+	var data []models.StudentClass
+
+	if err := config.DB.Where("class_id=?", classCode).Find(&data).Error; err != nil {
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error retrieving student data: %v", err.Error()))
+		return
+	}
+
+	helpers.RespondWithJSON(w, http.StatusOK, models.StudentClass.ToAllStudentClassResponse(data[0], data))
+
+}
+
+// delete student from class
+func DeleteStudentFromClass(w http.ResponseWriter, r *http.Request) {
+	studentID, err := helpers.GetIDFromParams(r)
+	classCode := chi.URLParam(r, "code")
+	if err != nil {
+		helpers.RespondWithErr(w, http.StatusBadRequest, fmt.Sprintf("Error parsing student id: %v", err.Error()))
+		return
+	}
+
+	if err := config.DB.Where("student_id=? AND class_id=?", studentID, classCode).Delete(&models.StudentClass{}).Error; err != nil {
+		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error deleting data: %v", err.Error()))
+		return
+	}
+	helpers.RespondWithJSON(w, http.StatusOK, fmt.Sprintf("Student-ID (%d) is removed from Class-Code (%s)", studentID, classCode))
 }

@@ -61,6 +61,10 @@ func main() {
 			r.Delete("/{id}", controllers.DeleteStudent) // delete student by id
 			r.Get("/{id}", controllers.GetStudentByID)   // get student by id
 			r.Get("/", controllers.GetAllStudents)       // get all students
+
+			r.Post("/{id}/{code}", controllers.AssignStudentToClass)     // assign student to class
+			r.Get("/{code}", controllers.GetAllStudentsFromClass)        // get students from class
+			r.Delete("/{id}/{code}", controllers.DeleteStudentFromClass) // remove student from class
 		})
 
 		// class
@@ -70,6 +74,19 @@ func main() {
 			r.Get("/{code}", controllers.GetClassByID)   // get class by class_code
 			r.Patch("/{code}", controllers.UpdateClass)  // update
 			r.Delete("/{code}", controllers.DeleteClass) // delete class by class_code
+		})
+
+		// instructor
+		r.Route("/instructor", func(r chi.Router) {
+			r.Post("/", controllers.CreateInstructor)       // create
+			r.Get("/", controllers.GetAllInstructors)       // get all instructors
+			r.Get("/{id}", controllers.GetInstructorByID)   // get instructor by id
+			r.Patch("/{id}", controllers.EditInstructor)    // update instructor
+			r.Delete("/{id}", controllers.DeleteInstructor) // delete instructor by id
+
+			r.Post("/{id}/{code}", controllers.AssignInstructorToClass) // assign instructor to a class
+			r.Get("/{code}", controllers.GetAllInstructorsFromClass) // get all instructors from class
+			r.Delete("/{id}/{code}", controllers.DeleteInstructorFromClass) // remove instructor from class
 		})
 
 	})
