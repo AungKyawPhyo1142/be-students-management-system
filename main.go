@@ -20,6 +20,9 @@ func main() {
 
 	godotenv.Load(".env")
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	// connect to database
 	config.ConnectDB()
@@ -84,8 +87,8 @@ func main() {
 			r.Patch("/{id}", controllers.EditInstructor)    // update instructor
 			r.Delete("/{id}", controllers.DeleteInstructor) // delete instructor by id
 
-			r.Post("/{id}/{code}", controllers.AssignInstructorToClass) // assign instructor to a class
-			r.Get("/{code}", controllers.GetAllInstructorsFromClass) // get all instructors from class
+			r.Post("/{id}/{code}", controllers.AssignInstructorToClass)     // assign instructor to a class
+			r.Get("/{code}", controllers.GetAllInstructorsFromClass)        // get all instructors from class
 			r.Delete("/{id}/{code}", controllers.DeleteInstructorFromClass) // remove instructor from class
 		})
 
