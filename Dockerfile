@@ -1,29 +1,23 @@
-FROM golang:1.21-alpine
+# Use an official Go image as the base image
+FROM golang:1.20
 
-# Add git and build tools
-RUN apk add --no-cache git gcc musl-dev
+# Set the working directory to root
+WORKDIR /
 
-WORKDIR /app
-
-# Copy go mod and sum files
+# Copy go.mod and go.sum to the root directory
 COPY go.mod go.sum ./
-
-# Set environment variables
-ENV CGO_ENABLED=1
-ENV GOOS=linux
-ENV GOARCH=amd64
 
 # Download dependencies
 RUN go mod download
 
-# Copy the source code
+# Copy the entire project to the container’s root
 COPY . .
 
 # Build the application
 RUN go build -o main .
 
-# Expose the port your app runs on
+# Expose the application port (adjust if your app listens on a different port)
 EXPOSE 8080
 
-# Command to run the application
+# Run the application
 CMD ["./main"]
