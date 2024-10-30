@@ -1,9 +1,17 @@
 FROM golang:1.21-alpine
 
+# Add git and build tools
+RUN apk add --no-cache git gcc musl-dev
+
 WORKDIR /app
 
 # Copy go mod and sum files
 COPY go.mod go.sum ./
+
+# Set environment variables
+ENV CGO_ENABLED=1
+ENV GOOS=linux
+ENV GOARCH=amd64
 
 # Download dependencies
 RUN go mod download
