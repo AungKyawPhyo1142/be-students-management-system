@@ -3,53 +3,70 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
-	"strconv"
-	"strings"
-	"time"
-
 	"github.com/AungKyawPhyo1142/be-students-management-system/config"
 	"github.com/AungKyawPhyo1142/be-students-management-system/helpers"
 	"github.com/AungKyawPhyo1142/be-students-management-system/models"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
+	"io"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
 )
 
-// create student in db
+// CreateStudent create student in db
 func CreateStudent(w http.ResponseWriter, r *http.Request) {
-	requestBody, Berror := io.ReadAll(r.Body)
-	if Berror != nil {
-		http.Error(w, Berror.Error(), http.StatusInternalServerError)
-		return
-	}
 	var student models.Student
-	err := json.Unmarshal(requestBody, &student)
+
+	files, err := helpers.PopulateStudent(r, &student)
 	if err != nil {
-		helpers.RespondWithErr(w, http.StatusBadRequest, "Invalid Request")
+		helpers.RespondWithErr(w, http.StatusBadRequest, fmt.Sprintf("Error populating student data: %v", err.Error()))
 		return
 	}
 
-	//validation
-	validator := validator.New()
-	Verr := validator.Struct(student)
-
-	if Verr != nil {
-		helpers.RespondWithErr(w, http.StatusBadRequest, fmt.Sprintf("Validation failed: %v", Verr.Error()))
+	// validate the student data
+	validate := validator.New()
+	err = validate.Struct(student)
+	if err != nil {
+		helpers.RespondWithErr(w, http.StatusBadRequest, fmt.Sprintf("Validation failed: %v", err.Error()))
 		return
+	}
+
+	// Extract the image file and upload it to supabase if it exists
+	imageFile, exists := files["image"]
+	if exists {
+		// Open the file
+		file, err := imageFile.Open()
+		if err != nil {
+			helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error opening image file: %v", err.Error()))
+			return
+		}
+		defer file.Close()
+
+		// upload the image to supabase
+		imageURL, err := helpers.UploadImageToSupabase(file, imageFile, "student-images")
+
+		if err != nil {
+			helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error uploading image: %v", err.Error()))
+			return
+		}
+
+		fmt.Printf("Image URL: %s\n", imageURL)
+		student.Image = &imageURL
 	}
 
 	result := config.DB.Create(&student)
-
 	if result.Error != nil {
 		helpers.RespondWithErr(w, http.StatusInternalServerError, fmt.Sprintf("Error creating student: %v", result.Error.Error()))
 		return
 	}
 
 	helpers.RespondWithJSON(w, http.StatusCreated, models.Student.ToStudentResponse(student))
+
 }
 
-// update student in db
+// EditStudent update student in db
 func EditStudent(w http.ResponseWriter, r *http.Request) {
 
 	//getting the id from url params

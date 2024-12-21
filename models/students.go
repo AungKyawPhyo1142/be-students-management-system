@@ -10,7 +10,7 @@ type Student struct {
 	DOB       string  `gorm:"type:varchar(100)" json:"dob" validate:"required"`
 	Email     string  `gorm:"type:varchar(100)" json:"email" validate:"required"`
 	Phone     string  `gorm:"type:varchar(100)" json:"phone" validate:"required"`
-	Classes   []Class `gorm:"many2many:student_classes;"` // sepecify that this has RS with classes table
+	Classes   []Class `gorm:"many2many:student_classes;"` // specify that this has RS with classes table
 }
 
 type StudentResponse struct {
@@ -30,7 +30,7 @@ type GetAllStudentsResponse struct {
 }
 
 func (s Student) ToStudentResponse() StudentResponse {
-	
+
 	image := ""
 
 	if s.Image != nil {
