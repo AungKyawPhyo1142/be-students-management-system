@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/AungKyawPhyo1142/be-students-management-system/helpers"
 	"log"
 	"net/http"
 	"os"
@@ -96,6 +97,9 @@ func main() {
 
 	// mount the v1 router to main/default router
 	router.Mount("/v1", v1Router)
+
+	// print all available routes
+	helpers.PrintRoutes(router)
 
 	// define server with apiRoutes and port number to listen
 	server := &http.Server{

@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -12,7 +11,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtKey =[]byte(os.Getenv("JWT_SECRET_KEY"))
+var jwtKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 
 type Claims struct {
 	Username string `json:"username"`
@@ -23,8 +22,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 
-		log.Print(authHeader)
-
 		if authHeader == "" {
 			helpers.RespondWithErr(w, http.StatusUnauthorized, "Authorization header is missing!")
 			return
@@ -32,7 +29,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// remove 'Bearer ' from token string
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-		log.Print(tokenStr)
 
 		claims := &Claims{}
 
@@ -47,8 +43,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			helpers.RespondWithErr(w, http.StatusUnauthorized, fmt.Sprintf("Invalid token: %v", err.Error()))
 			return
 		}
-
-		log.Printf(token.Raw)
 
 		// set the user's username to context so it can be used in the handlers
 
