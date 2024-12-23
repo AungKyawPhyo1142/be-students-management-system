@@ -1,0 +1,1084 @@
+{
+	"info": {
+		"_postman_id": "dd850dd2-27cd-4b8d-b54f-bad3d1f42f21",
+		"name": "Student Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23411992"
+	},
+	"item": [
+		{
+			"name": "students",
+			"item": [
+				{
+					"name": "create new student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF1bmdkZXYwMDEiLCJuYW1lIjoiQXVuZ0FkbWluIiwicm9sZSI6ImFkbWluIiwiaWQiOjEyLCJjcmVhdGVkX2F0IjoiMjAyNC0xMS0zMFQyMzoxMjo1OC41OTc4MTkrMDc6MDAiLCJleHAiOjE3MzQ3OTk4NzB9.e3cIzn_11db-bigpjKjoRDzfYjdjF5YSn2MqftvL1y8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstname",
+									"value": "Test",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Dev01",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0988888888",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "testdev001@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/khamaye/Downloads/arcane-img.jpeg"
+								},
+								{
+									"key": "dob",
+									"value": "11/5/2002",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/student",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit student",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"AungEdit\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/students/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"students",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MDMyNDU3fQ.Qxc6ItmNjx2-9o7e6xBarMeCWvEFi0PGRtPpTQ-7JQs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MDMxMzY2fQ.fok5KcgpNE8o30hUKVjkJ6z_r7em6Auv7D3uslhCbqU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/v1/student/4",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"student",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete student by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MDMyNTM1fQ.-yBpwk5mlhsLxKzBh5-0jvzg5cD-l1trJzav-14Y2u0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/v1/student/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"student",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all students",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>ID</th>",
+									"        <th>First Name</th>",
+									"        <th>Last Name</th>",
+									"        <th>Image</th>",
+									"        <th>Date of Birth</th>",
+									"        <th>Phone</th>",
+									"        <th>Email</th>",
+									"        <th>Created At</th>",
+									"        <th>Updated At</th>",
+									"    </tr>",
+									"    ",
+									"    {{#each response.data.data}}",
+									"        <tr id=row_{{@key}}>",
+									"            <td>{{id}}</td>",
+									"            <td>{{firstName}}</td>",
+									"            <td>{{lastName}}</td>",
+									"            <td>{{image}}</td>",
+									"            <td>{{date_of_birth}}</td>",
+									"            <td>{{phone}}</td>",
+									"            <td>{{email}}</td>",
+									"            <td>{{created_at}}</td>",
+									"            <td>{{updated_at}}</td>",
+									"        </tr>",
+									"    {{/each}}",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"  return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3NTQyNDA5fQ.GiXSWchw94D9ls9kXV8yeRagELvK11nYCXD5AG80l98",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/v1/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all students from class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTk4NzYxfQ.8HpWsS_ETBkKFZzkTobiJsl1r_FLX2g_bLCKixYCYHk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/v1/student/math-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"student",
+								"math-101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign student to class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTk4NzYxfQ.8HpWsS_ETBkKFZzkTobiJsl1r_FLX2g_bLCKixYCYHk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enrollment_date\": \"25/9/2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/student/6/math-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"student",
+								"6",
+								"math-101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove student from class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTk4NzYxfQ.8HpWsS_ETBkKFZzkTobiJsl1r_FLX2g_bLCKixYCYHk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enrollment_date\": \"25/9/2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/student/6/math-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"student",
+								"6",
+								"math-101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "instructors",
+			"item": [
+				{
+					"name": "create new instructor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Sayar\",\n    \"lastName\": \"One\",\n    \"phone\": \"098888888\",\n    \"email\": \"sayar@mail.com\"\n    // \"image\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/instructor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"instructor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit instructor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"SayarEdit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get instructor by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"AungEdit\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete student by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"AungEdit\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all instructors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>ID</th>",
+									"        <th>First Name</th>",
+									"        <th>Last Name</th>",
+									"        <th>Image</th>",
+									"        <th>Date of Birth</th>",
+									"        <th>Phone</th>",
+									"        <th>Email</th>",
+									"        <th>Created At</th>",
+									"        <th>Updated At</th>",
+									"    </tr>",
+									"    ",
+									"    {{#each response.data.data}}",
+									"        <tr id=row_{{@key}}>",
+									"            <td>{{id}}</td>",
+									"            <td>{{firstName}}</td>",
+									"            <td>{{lastName}}</td>",
+									"            <td>{{image}}</td>",
+									"            <td>{{date_of_birth}}</td>",
+									"            <td>{{phone}}</td>",
+									"            <td>{{email}}</td>",
+									"            <td>{{created_at}}</td>",
+									"            <td>{{updated_at}}</td>",
+									"        </tr>",
+									"    {{/each}}",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"  return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all instructor from class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor/math-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor",
+								"math-101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign instructor to class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enrollment_date\": \"25/9/2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor/1/math-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor",
+								"1",
+								"math-101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove instructor from class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enrollment_date\": \"25/9/2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/instructor/1/math-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"instructor",
+								"1",
+								"math-101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "classes",
+			"item": [
+				{
+					"name": "create a class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTA0OTg2fQ._sVNiJ2_dY53ou9HdDcbvNwwwWdyZIt1QZjAoeeLmbg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"className\": \"History 101\",\n    \"classCode\": \"hist-101\",\n    \"instructor\": \"Prof.History\",\n    \"semester\": \"Summer\",\n    \"year\":2024,\n    \"credits\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/class",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"class"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all calsses",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTk4NzYxfQ.8HpWsS_ETBkKFZzkTobiJsl1r_FLX2g_bLCKixYCYHk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"className\": \"History 101\",\n    \"classCode\": \"hist-101\",\n    \"instructor\": \"Prof.History\",\n    \"semester\": \"Summer\",\n    \"year\":2024,\n    \"credits\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/class",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"class"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTA0OTg2fQ._sVNiJ2_dY53ou9HdDcbvNwwwWdyZIt1QZjAoeeLmbg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"className\": \"History 101\",\n    \"classCode\": \"hist-101\",\n    \"instructor\": \"Prof.History\",\n    \"semester\": \"Summer\",\n    \"year\":2024,\n    \"credits\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/class/hist-102",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"class",
+								"hist-102"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTk0ODc4fQ.KWOs0Nt9l6bPSPvkOgj_yaVI-HKHrOJuJGKydnJz_2o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"className\": \"History 101\",\n    \"classCode\": \"hist-101\",\n    \"instructor\": \"Prof.History Wells\",\n    \"semester\": \"Fall\",\n    \"year\":2024,\n    \"credits\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/class/hist-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"class",
+								"hist-101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMTIzIiwiZXhwIjoxNzI3MTk0ODc4fQ.KWOs0Nt9l6bPSPvkOgj_yaVI-HKHrOJuJGKydnJz_2o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/v1/class/hist-101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"class",
+								"hist-101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ready",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}}/v1/ready",
+					"host": [
+						"{{HOST}}}"
+					],
+					"path": [
+						"v1",
+						"ready"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"AungAdmin\",\n    \"username\": \"aungdev001\",\n    \"password\": \"Aung@Dev001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/v1/auth/register",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    // \"name\": \"Aung\",\n    \"username\": \"admin123\",\n    \"password\": \"admin@123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/v1/auth/login",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get student",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF1bmdkZXYwMDEiLCJuYW1lIjoia3lhdyIsInJvbGUiOiJhZG1pbiIsImlkIjoyLCJjcmVhdGVkX2F0IjoiMjAyNC0xMC0zMVQxNjoxMDo1MS4wOTIzMzJaIiwiZXhwIjoxNzMyOTExMjA5fQ.6Qvjw6fv3lqXti2xEoiioJ5YdVhW4fLbIg9q1di3Ej0",
+			"type": "string"
+		},
+		{
+			"key": "HOST",
+			"value": "https://be-students-management-system-dev.up.railway.app",
+			"type": "string"
+		}
+	]
+}
