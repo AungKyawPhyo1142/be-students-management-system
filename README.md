@@ -1,6 +1,6 @@
 # Backend Students Management System
 
-This is the **backend student management system project** written in Golang as collaborative personal project between developers.
+This is the **backend student management system project** written in Golang as a personal project.
 
 ## Technologies
 
@@ -20,5 +20,3 @@ This is the **backend student management system project** written in Golang as c
 
     go build && ./be-student-management-sytem
 
-## Contributers
-- [Sebastian Kein (AungKyaw Phyo)](https://github.com/AungKyawPhyo1142)
